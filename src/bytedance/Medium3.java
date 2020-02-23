@@ -2,53 +2,57 @@ package bytedance;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 有两个容量分别为 x升 和 y升 的水壶以及无限多的水。请判断能否通过使用这两个水壶，从而可以得到恰好 z升 的水？
+ * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
  * <p>
- * 如果可以，最后请用以上水壶中的一或两个来盛放取得的 z升 水。
+ * 示例 1:
  * <p>
- * 你允许：
- * <p>
- * 装满任意一个水壶
- * 清空任意一个水壶
- * 从一个水壶向另外一个水壶倒水，直到装满或者倒空
- * <p>
- * 示例 1: (From the famous "Die Hard" example)
- * 输入: x = 3, y = 5, z = 4
- * 输出: True
- * <p>
+ * 输入: "abcabcbb"
+ * 输出: 3
+ * 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
  * 示例 2:
- * 输入: x = 2, y = 6, z = 5
- * 输出: False
  * <p>
- * 思路：
- * 比如，x = 3, y = 5, z = 4，步骤：
- * 1.y装满，往x里倒，即5-3=2；y有水2,x满
- * 2.x倒掉，把y中水倒入x;x有水2余空位1，y空
- * 3.y装满，往x里倒，即5-1=4;bingo
+ * 输入: "bbbbb"
+ * 输出: 1
+ * 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+ * 示例 3:
  * <p>
- * 数学定理：若a,b是整数,且gcd(a,b)=d，那么对于任意的整数x,y,ax+by都一定是d的倍数，特别地，一定存在整数x,y，使ax+by=d成立。
+ * 输入: "pwwkew"
+ * 输出: 3
+ * 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+ *      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
  * <p>
+ * 思路：滑动窗口法
  */
 public class Medium3 {
-    public boolean canMeasureWater(int x, int y, int z) {
-        if (x + y < z) return false;
-        if (x == z || y == z || x + y == z) return true;
-        return z % GCD(x, y) == 0;
-    }
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        //创建map窗口,i为左区间，j为右区间，右边界移动
+        Map<Character, Integer> map = new HashMap<>();
+        for (int j = 0, i = 0; j < n; j++) {
+            // 如果窗口中包含当前字符，
+            if (map.containsKey(s.charAt(j))) {
+                //更新右边界
+                //左边界移动到 相同字符的下一个位置和i当前位置中更靠右的位置，这样是为了防止i向左移动
+                //abba这种情况i在第二个a处更新时就会向左移动
+                i = Math.max(map.get(s.charAt(j)), i);
 
-    public int GCD(int a, int b) {//返回a和b的最大公约数
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
+            }
+            //比对当前无重复字段长度和储存的长度，选最大值并替换
+            //j-i+1是因为此时i,j索引仍处于不重复的位置，j还没有向后移动，取的[i,j]长度
+            ans = Math.max(ans, j - i + 1);
+            // 将当前字符为key，下一个索引为value放入map中
+            // value为j+1是为了当出现重复字符时，i直接跳到上个相同字符的下一个位置，if中取值就不用+1了
+            map.put(s.charAt(j), j + 1);
         }
-        return a;
+        return ans;
     }
 
     @Test
     public void test1() {
-        System.out.println(canMeasureWater(3, 5, 4));
-        System.out.println(canMeasureWater(2, 6, 5));
+
     }
 }

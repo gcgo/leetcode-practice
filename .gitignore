@@ -3,3 +3,12 @@
 /src/easy/
 /src/medium/
 /src/practice/
+/out/production/leetcode/dp/
+/out/production/leetcode/easy/
+/out/production/leetcode/amazon/
+/out/production/leetcode/practice/
+/out/production/leetcode/medium/
+/build/classes/dp/
+/build/classes/easy/
+/build/classes/medium/
+/build/classes/practice/
