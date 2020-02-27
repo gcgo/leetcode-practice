@@ -1,7 +1,5 @@
 package bytedance;
 
-import org.junit.Test;
-
 /**
  * 我们提供了一个类：
  * <p>
@@ -40,7 +38,7 @@ import org.junit.Test;
  * 3synchronized+while+wait
  */
 public class Easy1114 {
-    class Foo {
+    static class Foo {
         private boolean firstDone;
         private boolean secondDone;
         private boolean thirdDone;
@@ -101,8 +99,7 @@ public class Easy1114 {
         }
     }
 
-    @Test
-    public void test1() {
+    public static void main(String[] args) {//跑多线程不要用Test类，就用main函数
         Foo foo = new Foo();
 
         Thread t1 = new Thread(() -> {
