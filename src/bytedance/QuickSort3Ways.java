@@ -19,7 +19,7 @@ public class QuickSort3Ways {
         int lt = l;     // arr[l+1...lt] < pivot，初始值往左扩一格
         int gt = r + 1; // arr[gt...r] > pivot，初始值往右扩一格
         int cur = l + 1;  // arr[lt+1...cur) == pivot
-        while (cur < gt) {//从i开始考察
+        while (cur < gt) {//从cur开始考察
             if (arr[cur] < pivot) {
                 swap(arr, cur, lt + 1);//交换时lt往右扩一格，对比初始值记忆
                 cur++;
