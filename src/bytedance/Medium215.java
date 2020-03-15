@@ -48,7 +48,7 @@ public class Medium215 {
         nums[j] = pivot;//最后停下来的位置赋值pivot,此处j==i
 
         if (k == end - j + 1) {//从队尾到pivot（也就是j右边）一共k-1个元素的话，那么pivot就是第k大的元素
-        	//这个式子应该是k-1==end-(j+1)+1，就好理解了
+            //这个式子应该是k-1==end-(j+1)+1，就好理解了
             return pivot;
         } else if (k < end - j + 1) {//比pivot大的数已经超过k个了，所以第k大的数肯定在这里面
             return partition(j + 1, end, nums, k);
@@ -57,8 +57,38 @@ public class Medium215 {
         }
     }
 
+    /*基准值放在后面*/
+    public int findKthLargest2(int[] nums, int k) {
+        int start = 0;
+        int end = nums.length - 1;
+        return partition2(start, end, nums, k);
+    }
+
+    private int partition2(int start, int end, int[] nums, int k) {
+        int i = start;
+        for (int j = start; j < end; j++) {
+            /*以end作为基准值*/
+            if (nums[j] <= nums[end]) swap(nums, i++, j);
+        }
+        swap(nums, i, end);
+        /*此时i的位置是基准值的位置*/
+        if (k == end - i + 1) {//看看基准值到队尾是不是k个元素，是的话那么基准值就是第k大的元素
+            return nums[i];
+        } else if (k < end - i + 1) {//如果比基准值大的数已经超过k个了，则证明基准值小了，所以第k大的数肯定在这里面
+            return partition2(i + 1, end, nums, k);
+        } else {//否则就在j左边，但是现在右边已经有end-i+1个比k大的数了，所以从新区间找（k减去这些数）个数就行了。
+            return partition2(start, i - 1, nums, k - (end - i + 1));
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+
     @Test
     public void test1() {
-        System.out.println(findKthLargest(new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6}, 4));
+        System.out.println(findKthLargest2(new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6}, 4));
     }
 }

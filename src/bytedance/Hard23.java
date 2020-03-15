@@ -2,6 +2,7 @@ package bytedance;
 
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -16,6 +17,9 @@ import java.util.PriorityQueue;
  *   2->6
  * ]
  * 输出: 1->1->2->3->4->4->5->6
+ * 思路：利用最小堆，把所有链表存进去，最小堆按照链表当前节点大小排序，这样每次堆顶都是最小的，弹出，链接在dummy后面，
+ * 然后把弹出的节点的next继续入堆。
+ *
  */
 public class Hard23 {
     public ListNode mergeKLists(ListNode[] lists) {
@@ -27,7 +31,7 @@ public class Hard23 {
         ListNode preHead = new ListNode(-1);
         ListNode cur = preHead;
         //按节点数值大小比较建立最小堆
-        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(len, (n1, n2) -> (n1.val - n2.val));
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(len, Comparator.comparingInt(n -> n.val));
         for (ListNode list : lists) {
             if (list != null) minHeap.offer(list);//节点入队，自动排序
         }

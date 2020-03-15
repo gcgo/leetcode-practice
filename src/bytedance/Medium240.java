@@ -22,7 +22,7 @@ import org.junit.Test;
  * <p>
  * 给定 target = 20，返回 false。
  * 思路：所以矩阵右下角是最大的元素，左上角是最小的元素。可以从右上角开始找！！！
- * 若比target大，则横着往左找，弱逼target小，则竖着往下找
+ * 若比target大，则横着往左找，弱比target小，则竖着往下找
  */
 public class Medium240 {
 

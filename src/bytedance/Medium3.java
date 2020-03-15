@@ -3,7 +3,9 @@ package bytedance;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
@@ -25,34 +27,49 @@ import java.util.Map;
  * 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
  *      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
  * <p>
- * 思路：滑动窗口法
+ * 思路：双指针作为窗口，固定左边界i,右边界j不断扩张考察，用一个集合set来记录窗口内的字符集。
+ * j每走一步，判断下当前字符在不在set里，若不在则添加该字符，更新最大长度；
+ * 若在，则需要更新左边界i了，为了让当前的j能够算入字符集，我们需要从i开始不断从set中删除字符，每删除一个i对应的字符
+ * 判断下set中还有没有j,若还有则继续删。直到set中可以添加j了，则添加进去，并更新一下长度。
+ * 这样保证ij这个窗口是不断平移扫过所有元素的，并且只需要一次遍历，时间复杂度O(n)
  */
 public class Medium3 {
-    public int lengthOfLongestSubstring(String s) {
-        int n = s.length(), ans = 0;
-        //创建map窗口,i为左区间，j为右区间，右边界移动
-        Map<Character, Integer> map = new HashMap<>();
-        for (int j = 0, i = 0; j < n; j++) {
-            // 如果窗口中包含当前字符，
-            if (map.containsKey(s.charAt(j))) {
-                //更新右边界
-                //左边界移动到 相同字符的下一个位置和i当前位置中更靠右的位置，这样是为了防止i向左移动
-                //abba这种情况i在第二个a处更新时就会向左移动
-                i = Math.max(map.get(s.charAt(j)), i);
 
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int res = 0;
+        for (int i = 0, j = 0; j < s.length(); j++) {
+            while (set.contains(s.charAt(j))) {
+                set.remove(s.charAt(i));
+                i++;
             }
-            //比对当前无重复字段长度和储存的长度，选最大值并替换
-            //j-i+1是因为此时i,j索引仍处于不重复的位置，j还没有向后移动，取的[i,j]长度
+            set.add(s.charAt(j));
+            res = Math.max(res, j - i + 1);
+        }
+        return res;
+    }
+
+    /*优化算法，更新i时，不用从i一步一步挪过来了*/
+    public int lengthOfLongestSubstring2(String s) {
+        int n = s.length(), ans = 0;
+        //map存的是某字符上一次出现的位置
+        Map<Character, Integer> map = new HashMap<>();
+        //i为左区间，j为右区间，右边界移动
+        for (int j = 0, i = 0; j < n; j++) {
+            // 如果map中包含当前字符
+            if (map.containsKey(s.charAt(j))) {
+                //更新左边界，左边界应该移动到“map中记录的该元素上一次出现的位置+1”和“当前i”更大的那个位置
+                i = Math.max(map.get(s.charAt(j)) + 1, i);
+            }
+            //更新当前字符位置与结果
+            map.put(s.charAt(j), j);
             ans = Math.max(ans, j - i + 1);
-            // 将当前字符为key，下一个索引为value放入map中
-            // value为j+1是为了当出现重复字符时，i直接跳到上个相同字符的下一个位置，if中取值就不用+1了
-            map.put(s.charAt(j), j + 1);
         }
         return ans;
     }
 
     @Test
     public void test1() {
-
+        System.out.println(lengthOfLongestSubstring2("abcabcbb"));
     }
 }

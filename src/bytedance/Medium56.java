@@ -34,18 +34,16 @@ public class Medium56 {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
 
         List<int[]> result = new ArrayList<>();
-        int[] newInterval = intervals[0];
-        result.add(newInterval);//先把数组存进列表里，外边改数组值，依然会影响列表的值。java值传递！！！
-        for (int[] interval : intervals) {
-            if (interval[0] <= newInterval[1]) // 如果下一个区间的左边界<=上一个区间的右边界，证明重合
+        int[] preInterval = null;
+        for (int[] current : intervals) {
+            if (preInterval != null && current[0] <= preInterval[1]) // 如果当前区间的左边界<=上一个区间的右边界，证明重合
                 //更新新区间的右边界为：上一个区间和下一个区间右边界大的
-                newInterval[1] = Math.max(newInterval[1], interval[1]);
+                preInterval[1] = Math.max(preInterval[1], current[1]);
             else {//否则证明没有重合，则该区间为其中一个结果！！
-                newInterval = interval;//java值传递！！此处newInterval指向新的对象，不影响原来存在result中的那个值
-                result.add(newInterval);
+                preInterval = current;//java值传递！！此处newInterval指向新的对象，不影响原来存在result中的那个值
+                result.add(preInterval);
             }
         }
-
         return result.toArray(new int[result.size()][]);
     }
 
