@@ -21,11 +21,9 @@ public class Medium200 {
     void dfs(char[][] grid, int r, int c) {
         int nr = grid.length;//行数
         int nc = grid[0].length;//列数
-
         if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
             return;
         }
-
         grid[r][c] = '0';//将当前节点标记查找过
         dfs(grid, r - 1, c);//找左边
         dfs(grid, r + 1, c);//找右边
@@ -37,7 +35,6 @@ public class Medium200 {
         if (grid == null || grid.length == 0) {
             return 0;
         }
-
         int nr = grid.length;
         int nc = grid[0].length;
         int num_islands = 0;
@@ -49,7 +46,6 @@ public class Medium200 {
                 }
             }
         }
-
         return num_islands;
     }
 

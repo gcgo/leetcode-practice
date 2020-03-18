@@ -41,7 +41,7 @@ public class Medium547 {
         int[] visited = new int[M.length];
         int count = 0;
         for (int i = 0; i < M.length; i++) {
-            if (visited[i] == 0) {
+            if (visited[i] == 0) {//从第一个人开始，如果他没有被考察过，dfs
                 dfs(M, visited, i);
                 count++;
             }
@@ -50,9 +50,9 @@ public class Medium547 {
     }
 
     private void dfs(int[][] M, int[] visited, int i) {
-        for (int j = 0; j < M.length; j++) {
-            if (M[i][j] == 1 && visited[j] == 0) {
-                visited[j] = 1;
+        for (int j = 0; j < M.length; j++) {//遍历i的朋友圈
+            if (M[i][j] == 1 && visited[j] == 0) {//如果j是i的朋友，且没有被考察过
+                visited[j] = 1;//再去深究j的朋友圈
                 dfs(M, visited, j);
             }
         }
