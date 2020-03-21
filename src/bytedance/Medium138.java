@@ -14,6 +14,7 @@ import org.junit.Test;
  *
  *
  * 思路：原地复制，在每一个节点后面复制自己，然后再填充random，最后再断开。
+ * 这道题解法和Spring解决循环依赖的原理很像，先构造对象，所有对象齐了，最后再统一填充属性
  */
 public class Medium138 {
     public Node copyRandomList(Node head) {
@@ -21,7 +22,7 @@ public class Medium138 {
             return null;
         }
         Node cur = head;
-        Node next = null;
+        Node next;
         //1复制新链表，只复制next指针，不复制random指针
         while (cur != null) {
             next = cur.next;//保存一下
@@ -34,6 +35,7 @@ public class Medium138 {
         //2复制random指针
         while (cur != null) {
             next = cur.next.next;
+            //cur.random是老链表，cur.random.next才是新链表
             cur.next.random = cur.random != null ? cur.random.next : null;
             cur = next;
         }

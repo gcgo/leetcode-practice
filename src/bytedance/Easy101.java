@@ -43,15 +43,15 @@ import java.util.Queue;
  */
 public class Easy101 {
 	public boolean isSymmetric(TreeNode root) {
-		return isMirror(root, root);//root照镜子
+		return isSame(root, root);//root照镜子
 	}
 
-	public boolean isMirror(TreeNode t1, TreeNode t2) {
+	public boolean isSame(TreeNode t1, TreeNode t2) {
 		if (t1 == null && t2 == null) return true;//都为空指针则返回 true
 		if (t1 == null || t2 == null) return false;//只有一个为空则返回 false
 		return (t1.val == t2.val) &&//首先看值是否相等
-				isMirror(t1.right, t2.left) &&//递归判断t1左子树和t2右子树是否对称
-				isMirror(t1.left, t2.right);//同理
+				isSame(t1.right, t2.left) &&//递归判断t1左子树和t2右子树是否对称
+				isSame(t1.left, t2.right);//同理
 	}
 
 	//****************************非递归↓↓↓↓↓↓↓↓↓↓↓↓↓↓*****************************************
