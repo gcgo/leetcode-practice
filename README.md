@@ -1,3 +1,13 @@
-# leetcode-practice
-字节跳动leetcode
-刷题笔记
+# Leetcode刷题
+
+项目包含：
+
+字节跳动题目汇总
+
+剑指Offer题目汇总
+
+程序员面试金典汇总
+
+持续刷题更新
+
+
